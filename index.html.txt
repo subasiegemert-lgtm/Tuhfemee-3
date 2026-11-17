@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuhfe 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1b0a24 0%, #09030e 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cinzel Decorative', cursive;
+            color: #fff;
+        }
+
+        /* Arka plan parıltıları (ateş böcekleri) */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: #ffb7c5;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* İsim Alanı */
+        .title-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInTitle 2.5s ease-out 1.5s forwards;
+        }
+
+        .name {
+            font-size: 4.5rem;
+            letter-spacing: 8px;
+            background: linear-gradient(45deg, #fff, #ffb7c5, #ff69b4, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 105, 180, 0.4);
+            animation: shine 4s linear infinite;
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #e0b0ff;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            opacity: 0.85;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        @keyframes fadeInTitle {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Lilyum Çiçeği Konteyneri */
+        .flower-wrapper {
+            position: relative;
+            width: 320px;
+            height: 360px;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        /* Sap ve Yapraklar */
+        .stem {
+            position: absolute;
+            bottom: 0;
+            width: 6px;
+            height: 0;
+            background: linear-gradient(to top, #1b4332, #40916c);
+            border-radius: 3px;
+            animation: growStem 2s ease-out forwards;
+            box-shadow: 0 0 10px rgba(64, 145, 108, 0.5);
+        }
+
+        @keyframes growStem {
+            to {
+                height: 200px;
+            }
+        }
+
+        .leaf {
+            position: absolute;
+            bottom: 60px;
+            width: 60px;
+            height: 20px;
+            background: linear-gradient(45deg, #2d6a4f, #52b788);
+            border-radius: 0 50px 0 50px;
+            transform-origin: left center;
+            transform: scale(0);
+            animation: growLeaf 1.5s ease-out 1s forwards;
+        }
+
+        .leaf.left {
+            left: 50%;
+            transform-origin: right center;
+            border-radius: 50px 0 50px 0;
+            margin-left: -60px;
+            bottom: 90px;
+            animation: growLeafLeft 1.5s ease-out 1.2s forwards;
+        }
+
+        @keyframes growLeaf {
+            to { transform: scale(1) rotate(-25deg); }
+        }
+
+        @keyframes growLeafLeft {
+            to { transform: scale(1) rotate(25deg); }
+        }
+
+        /* Lilyum Başlığı */
+        .lily-head {
+            position: absolute;
+            top: 40px;
+            width: 220px;
+            height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Yapraklar (Petals) */
+        .petal {
+            position: absolute;
+            width: 45px;
+            height: 110px;
+            background: linear-gradient(to top, #ff4d6d 0%, #ffb3c1 45%, #ffffff 100%);
+            border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+            transform-origin: bottom center;
+            bottom: 50%;
+            opacity: 0;
+            box-shadow: 0 0 15px rgba(255, 182, 193, 0.6);
+        }
+
+        /* Lilyum üzerindeki benekler */
+        .petal::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 30px;
+            background-image: radial-gradient(#800f2f 1.5px, transparent 1.5px);
+            background-size: 5px 6px;
+            opacity: 0.7;
+        }
+
+        /* 6 Adet Lilyum Yaprağı Açılma Animasyonları */
+        .p1 { animation: bloom1 2s ease-out 1.2s forwards; }
+        .p2 { animation: bloom2 2s ease-out 1.3s forwards; }
+        .p3 { animation: bloom3 2s ease-out 1.4s forwards; }
+        .p4 { animation: bloom4 2s ease-out 1.5s forwards; }
+        .p5 { animation: bloom5 2s ease-out 1.6s forwards; }
+        .p6 { animation: bloom6 2s ease-out 1.7s forwards; }
+
+        @keyframes bloom1 {
+            0% { transform: rotate(0deg) scale(0); opacity: 0; }
+            100% { transform: rotate(0deg) scale(1); opacity: 1; }
+        }
+        @keyframes bloom2 {
+            0% { transform: rotate(0deg) scale(0); opacity: 0; }
+            100% { transform: rotate(60deg) scale(0.95); opacity: 1; }
+        }
+        @keyframes bloom3 {
+            0% { transform: rotate(0deg) scale(0); opacity: 0; }
+            100% { transform: rotate(120deg) scale(0.95); opacity: 1; }
+        }
+        @keyframes bloom4 {
+            0% { transform: rotate(0deg) scale(0); opacity: 0; }
+            100% { transform: rotate(180deg) scale(0.9); opacity: 1; }
+        }
+        @keyframes bloom5 {
+            0% { transform: rotate(0deg) scale(0); opacity: 0; }
+            100% { transform: rotate(240deg) scale(0.95); opacity: 1; }
+        }
+        @keyframes bloom6 {
+            0% { transform: rotate(0deg) scale(0); opacity: 0; }
+            100% { transform: rotate(300deg) scale(0.95); opacity: 1; }
+        }
+
+        /* Çiçeğin Orta Polenleri (Stamen) */
+        .stamen {
+            position: absolute;
+            width: 3px;
+            height: 45px;
+            background: #d8f3dc;
+            bottom: 50%;
+            transform-origin: bottom center;
+            opacity: 0;
+            animation: showStamen 1.5s ease-out 2.2s forwards;
+        }
+
+        .stamen::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -3.5px;
+            width: 10px;
+            height: 6px;
+            background: #ffb703;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ffb703;
+        }
+
+        .s1 { transform: rotate(-20deg); }
+        .s2 { transform: rotate(0deg); height: 55px; }
+        .s3 { transform: rotate(20deg); }
+
+        @keyframes showStamen {
+            to { opacity: 1; }
+        }
+
+        /* Mobil Uyum */
+        @media (max-width: 600px) {
+            .name { font-size: 3rem; letter-spacing: 5px; }
+            .subtitle { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="particles" id="particles"></div>
+
+    <div class="title-container">
+        <div class="name">TUHFE</div>
+        <div class="subtitle">En nadide çiçeğe...</div>
+    </div>
+
+    <div class="flower-wrapper">
+        <div class="stem"></div>
+        <div class="leaf"></div>
+        <div class="leaf left"></div>
+        
+        <div class="lily-head">
+            <div class="petal p1"></div>
+            <div class="petal p2"></div>
+            <div class="petal p3"></div>
+            <div class="petal p4"></div>
+            <div class="petal p5"></div>
+            <div class="petal p6"></div>
+
+            <div class="stamen s1"></div>
+            <div class="stamen s2"></div>
+            <div class="stamen s3"></div>
+        </div>
+    </div>
+
+    <script>
+        // Ekranda uçuşan parıltılar oluşturma
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 35;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            const size = Math.random() * 5 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            
+            const duration = Math.random() * 6 + 4;
+            const delay = Math.random() * 5;
+            
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `${delay}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>
